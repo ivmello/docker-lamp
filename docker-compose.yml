@@ -1,0 +1,39 @@
+version: '3'
+
+volumes:
+  persistent:
+
+services:
+  php:
+    container_name: php7.4-apache
+    build:
+      context: ./php
+    ports:
+      - 80:80
+    volumes:
+      - ../../trabalhos:/var/www/html:z
+    links:
+      - 'mysql'
+    networks:
+      - default
+    depends_on:
+      - mysql
+  mysql:
+    container_name: mysql
+    tty: true
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: docker
+      MYSQL_USER: docker
+      MYSQL_PASS: docker
+      MYSQL_ROOT_PASSWORD: docker
+    networks:
+      - default
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./mysql/dump:/docker-entrypoint-initdb.d
+      - ./mysql/conf:/etc/mysql/conf.d
+      - persistent:/var/lib/mysql
