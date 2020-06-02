@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 volumes:
   persistent:
@@ -6,7 +6,7 @@ volumes:
 services:
   php:
     container_name: php7.4-apache
-    restart: 'always'
+    restart: "always"
     build:
       context: ./php
     ports:
@@ -14,7 +14,7 @@ services:
     volumes:
       - ../../trabalhos:/var/www/html:z
     links:
-      - 'mysql'
+      - "mysql"
     networks:
       - default
     depends_on:
@@ -33,13 +33,26 @@ services:
     networks:
       - default
     ports:
-      - '3306:3306'
+      - "3306:3306"
     volumes:
       - ./mysql/dump:/docker-entrypoint-initdb.d
       - ./mysql/conf:/etc/mysql/conf.d
       - persistent:/var/lib/mysql
+  postgres:
+    container_name: postgres
+    tty: true
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: docker
+    networks:
+      - default
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
   redis:
-    container_name: 'redis'
+    container_name: "redis"
     image: redis:latest
     ports:
-      - '6379:6379'
+      - "6379:6379"

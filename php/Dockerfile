@@ -30,6 +30,10 @@ RUN apt-get -y update && \
   rm -rf /var/lib/apt/lists/* && \
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN apt-get update -y && apt-get install -y sendmail libpng-dev
+
+RUN apt-get update && apt-get install -y zlib1g-dev 
+
 # Install xdebug
 RUN pecl install xdebug-2.8.0 && \
   docker-php-ext-enable xdebug
@@ -48,6 +52,7 @@ RUN docker-php-ext-install pdo_mysql && \
   docker-php-ext-install zip && \
   docker-php-ext-install -j$(nproc) intl && \
   docker-php-ext-install mbstring && \
+  docker-php-ext-install gd && \
   docker-php-ext-install gettext
 
 # Install Freetype 
