@@ -23,13 +23,14 @@ services:
     container_name: mysql
     tty: true
     image: mysql:8
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password --sort-buffer-size=350144 --sql-mode=""
     restart: always
     environment:
       MYSQL_DATABASE: docker
       MYSQL_USER: docker
       MYSQL_PASS: docker
       MYSQL_ROOT_PASSWORD: docker
+      # sort-buffer-size: 262144
     networks:
       - default
     ports:
